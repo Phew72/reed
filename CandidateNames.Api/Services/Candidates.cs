@@ -1,4 +1,5 @@
-﻿using CandidateNames.Sources;
+﻿using CandidateNames.Api.Models;
+using CandidateNames.Sources;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,10 +9,12 @@ namespace CandidateNames.Api.Services
     public class Candidates : ICandidates
     {
         private readonly IUserRepository _userRepository;
+        private readonly InitialCounter _initialCounter;
 
         public Candidates(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+            _initialCounter = new InitialCounter();
         }
 
         public string[] GetAll()
@@ -39,10 +42,16 @@ namespace CandidateNames.Api.Services
                 if (regEx.IsMatch(fullName))
                 {
                     cleanList.Add(fullName);
+                    _initialCounter.ParseAndIncrement(fullName);
                 }
             }
 
             return cleanList.ToArray();
+        }
+
+        public string GetInitialCountOutput()
+        {
+            return _initialCounter.ToString();
         }
     }
 }

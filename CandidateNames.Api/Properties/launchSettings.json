@@ -17,6 +17,8 @@
     },
     "CandidateNames.Api": {
       "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/candidatenames",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

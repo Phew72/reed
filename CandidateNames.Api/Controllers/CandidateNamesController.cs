@@ -1,5 +1,6 @@
 ﻿using CandidateNames.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace CandidateNames.Api.Controllers
 {
@@ -17,7 +18,16 @@ namespace CandidateNames.Api.Controllers
         [HttpGet]
         public IActionResult GetCandidateNames()
         {
-            return Ok(_candidates.GetAll());
+            var output = new StringBuilder();
+
+            var candidates = _candidates.GetAll();
+            output.AppendLine(string.Join("\n", candidates));
+
+            output.AppendLine();
+
+            output.Append(_candidates.GetInitialCountOutput());
+
+            return Ok(output.ToString());
         }
     }
 }
