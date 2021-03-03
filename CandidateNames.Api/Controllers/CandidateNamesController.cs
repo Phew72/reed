@@ -21,14 +21,12 @@ namespace CandidateNames.Api.Controllers
         {
             var output = new StringBuilder();
 
-            //var candidates = _candidates.GetAll();
             var candidates = _candidates.GetArrayOfValidCandidates();
 
             output.AppendLine(string.Join("\n", candidates));
 
             output.AppendLine();
 
-            //output.Append(_candidates.GetInitialCountOutput());
             output.Append(_candidates.GetCandidatesInitialCountOutput());
 
             return Ok(output.ToString());

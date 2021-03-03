@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace CandidateNames.Api.Models
@@ -27,20 +26,6 @@ namespace CandidateNames.Api.Models
                 var key = char.Parse(candidate.FirstInitial);
                 Increment(key);
             }
-        }
-
-        public void ParseAndIncrement(string fullName)
-        {
-            if (string.IsNullOrWhiteSpace(fullName))
-                throw new ArgumentNullException(nameof(fullName));
-
-            var initialChar = fullName
-                .ToUpper()
-                .Split(',')[1]
-                .Trim()
-                .ToCharArray()[0];
-
-            Increment(initialChar);
         }
 
         public override string ToString()
