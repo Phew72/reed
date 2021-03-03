@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateNames", "Candidate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateNames.Tests", "CandidateNames.Tests\CandidateNames.Tests.csproj", "{0E5BA620-5B67-444B-9992-8DEDA6406C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandidateNames.Api", "CandidateNames.Api\CandidateNames.Api.csproj", "{96A3AA1F-7D4D-4120-8C59-FB80BF0659DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateNames.Api", "CandidateNames.Api\CandidateNames.Api.csproj", "{96A3AA1F-7D4D-4120-8C59-FB80BF0659DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1023C6AB-6A2F-4E24-A7DA-D478F78DDF05}"
+	ProjectSection(SolutionItems) = preProject
+		.filenesting.json = .filenesting.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

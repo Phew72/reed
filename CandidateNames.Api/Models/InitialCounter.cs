@@ -6,11 +6,27 @@ namespace CandidateNames.Api.Models
 {
     public class InitialCounter
     {
-        private readonly SortedList<char, int> _intialCount;
+        private readonly SortedList<char, int> _initialCount;
 
         public InitialCounter()
         {
-            _intialCount = new SortedList<char, int>();
+            _initialCount = new SortedList<char, int>();
+        }
+
+        public void ParseCandidatesList(List<Candidate> candidates)
+        {
+            if (candidates == null || candidates.Count == 0)
+                return;
+
+            _initialCount.Clear();
+
+            foreach (var candidate in candidates)
+            {
+                if (!candidate.IsValid) continue;
+
+                var key = char.Parse(candidate.FirstInitial);
+                Increment(key);
+            }
         }
 
         public void ParseAndIncrement(string fullName)
@@ -31,7 +47,7 @@ namespace CandidateNames.Api.Models
         {
             var output = new StringBuilder();
 
-            foreach (var (key, value) in _intialCount)
+            foreach (var (key, value) in _initialCount)
             {
                 output.AppendLine($"{key} - {value}");
             }
@@ -41,13 +57,13 @@ namespace CandidateNames.Api.Models
 
         private void Increment(char key)
         {
-            if (_intialCount.TryGetValue(key, out var currentCount))
+            if (_initialCount.TryGetValue(key, out var currentCount))
             {
-                _intialCount.Remove(key);
+                _initialCount.Remove(key);
             }
 
             var newCount = ++currentCount;
-            _intialCount.Add(key, newCount);
+            _initialCount.Add(key, newCount);
         }
     }
 }

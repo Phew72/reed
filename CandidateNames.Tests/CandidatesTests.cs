@@ -57,5 +57,18 @@ namespace CandidateNames.Tests
 
             Assert.Equal(TestData.GetCleanCandidates, results);
         }
+
+        [Fact]
+        public void GetArrayOfValidCandidates_WhenCalled_ReturnsCandidatesNoDuplicates()
+        {
+            _mockUserRepository.Setup(r => r.GetDeveloperJobApplicants()).Returns(TestData.GetDirtyDeveloperCandidates);
+            _mockUserRepository.Setup(r => r.GetTesterJobApplicants()).Returns(TestData.GetDirtyTesterCandidates);
+
+            var service = new Candidates(_mockUserRepository.Object);
+
+            var results = service.GetArrayOfValidCandidates();
+
+            Assert.Equal(TestData.GetCleanCandidates, results);
+        }
     }
 }
