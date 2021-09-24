@@ -43,5 +43,20 @@ namespace CandidateNames.Tests
 
             Assert.Equal(expectedOutput, result);
         }
+
+        [Fact]
+        public void GetTotalCount_WhenMultipleInitialsCounted_ThenTotalIsCorrect()
+        {
+            var initalCounter = new InitialCounter();
+
+            foreach (var fullName in TestData.GetCleanCandidates)
+            {
+                initalCounter.ParseAndIncrement(fullName);
+            }
+
+            var result = initalCounter.GetTotalCount();
+
+            Assert.Equal(TestData.GetCleanCandidates.Length, result);
+        }
     }
 }

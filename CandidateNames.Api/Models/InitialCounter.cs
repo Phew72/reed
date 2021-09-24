@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace CandidateNames.Api.Models
@@ -8,6 +9,8 @@ namespace CandidateNames.Api.Models
     {
         private readonly SortedList<char, int> _intialCount;
 
+        public int TotalInitialCount => GetTotalCount();
+
         public InitialCounter()
         {
             _intialCount = new SortedList<char, int>();
@@ -15,6 +18,8 @@ namespace CandidateNames.Api.Models
 
         public void ParseAndIncrement(string fullName)
         {
+            Debug.WriteLine($"Full name: {fullName}");
+
             if (string.IsNullOrWhiteSpace(fullName))
                 throw new ArgumentNullException(nameof(fullName));
 
@@ -25,6 +30,16 @@ namespace CandidateNames.Api.Models
                 .ToCharArray()[0];
 
             Increment(initialChar);
+        }
+
+        public int GetTotalCount()
+        {
+            int count = 0;
+            foreach (var initial in _intialCount)
+            {
+                count = count + initial.Value;
+            }
+            return count;
         }
 
         public override string ToString()

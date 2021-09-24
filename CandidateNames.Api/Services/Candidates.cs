@@ -11,6 +11,8 @@ namespace CandidateNames.Api.Services
         private readonly IUserRepository _userRepository;
         private readonly InitialCounter _initialCounter;
 
+        public int TotalInitialsCounted => _initialCounter.TotalInitialCount;
+
         public Candidates(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -24,6 +26,11 @@ namespace CandidateNames.Api.Services
             var testers = CleanList(_userRepository.GetTesterJobApplicants());
 
             var allCandidates = developers.Union(testers).ToArray();
+
+            // Count all first name initials (w/o duplicates!)
+            allCandidates.ToList()
+                .ForEach(n => _initialCounter.ParseAndIncrement(n));
+
             return allCandidates;
         }
 
@@ -42,7 +49,6 @@ namespace CandidateNames.Api.Services
                 if (regEx.IsMatch(fullName))
                 {
                     cleanList.Add(fullName);
-                    _initialCounter.ParseAndIncrement(fullName);
                 }
             }
 
