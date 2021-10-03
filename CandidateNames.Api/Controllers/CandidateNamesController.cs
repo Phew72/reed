@@ -26,9 +26,9 @@ namespace CandidateNames.Api.Controllers
             var candidates = _candidates.GetAll();
 
             // 24-09-2021 - Added after assessment
-            // IComparer<string> myFirstNameComparer = new FirstNameComparer();
-            // Array.Sort(candidates, myFirstNameComparer);
-            Array.Sort(candidates);
+            IComparer<string> myFirstNameComparer = new FirstNameComparer();
+            Array.Sort(candidates, myFirstNameComparer);
+            // Array.Sort(candidates);
 
             output.AppendLine($"Total candidates: {candidates.Length}");
             output.AppendLine("---------------------");

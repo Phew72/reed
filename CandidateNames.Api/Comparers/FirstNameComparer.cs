@@ -6,17 +6,10 @@ namespace CandidateNames.Api.Comparers
     {
         public int Compare(string first, string second)
         {
-            // Get initial from first name
-            char firstInitial = first.Split(',')[1].Trim().ToUpper().ToCharArray()[0];
-            char secondInitial = second.Split(',')[1].Trim().ToUpper().ToCharArray()[0];
+            var firstName = first.Split(',')[1].Trim().ToUpper();
+            var secondName = second.Split(',')[1].Trim().ToUpper();
 
-            if (firstInitial.Equals(secondInitial))
-                return 0;
-            
-            if (firstInitial < secondInitial)
-                return -1;
-            else
-                return 1;
+            return firstName.CompareTo(secondName);
         }
     }
 }
