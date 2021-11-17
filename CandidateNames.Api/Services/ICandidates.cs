@@ -2,10 +2,8 @@
 {
     public interface ICandidates
     {
+        string[] GetArrayOfValidCandidates();
+        string GetCandidatesInitialCountOutput();
         int TotalInitialsCounted { get; }
-        
-        string[] CleanList(string[] candidates);
-        string[] GetAll();
-        string GetInitialCountOutput();
     }
 }

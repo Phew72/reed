@@ -1,15 +1,17 @@
-﻿using CandidateNames.Api.Models;
+﻿using CandidateNames.Api.Comparers;
+using CandidateNames.Api.Models;
 using CandidateNames.Sources;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace CandidateNames.Api.Services
 {
     public class Candidates : ICandidates
     {
         private readonly IUserRepository _userRepository;
-        private readonly InitialCounter _initialCounter;
+
+        private List<Candidate> _candidateList;
+        private InitialCounter _initialCounter;
 
         public int TotalInitialsCounted => _initialCounter.TotalInitialCount;
 
@@ -19,44 +21,31 @@ namespace CandidateNames.Api.Services
             _initialCounter = new InitialCounter();
         }
 
-        public string[] GetAll()
+        public string[] GetArrayOfValidCandidates()
         {
-            var developers = CleanList(_userRepository.GetDeveloperJobApplicants());
+            var developerNames = _userRepository.GetDeveloperJobApplicants();
+            var testerNames = _userRepository.GetTesterJobApplicants();
 
-            var testers = CleanList(_userRepository.GetTesterJobApplicants());
+            var developerCandidates =
+                developerNames.Select(developer => new Candidate(developer))
+                    .Where(c => c.IsValid)
+                    .ToList();
 
-            var allCandidates = developers.Union(testers).ToArray();
+            var testerCandidates =
+                testerNames.Select(tester => new Candidate(tester))
+                    .Where(c => c.IsValid)
+                    .ToList();
 
-            // Count all first name initials (w/o duplicates!)
-            allCandidates.ToList()
-                .ForEach(n => _initialCounter.ParseAndIncrement(n));
+            _candidateList = new List<Candidate>();
+            _candidateList = developerCandidates.Union(testerCandidates, new CandidateNameComparer()).ToList();
 
-            return allCandidates;
+            return _candidateList.Select(c => c.ToString()).ToArray();
         }
 
-        public string[] CleanList(string[] candidates)
+        public string GetCandidatesInitialCountOutput()
         {
-            if (candidates == null || candidates.Length == 0)
-                return candidates;
-
-            var regEx = new Regex("^([A-Za-z]+),\\s*([A-Za-z]+)$");
-            var cleanList = new List<string>();
-
-            // Loop through all items
-            foreach (var fullName in candidates)
-            {
-                // Check name against regular expression
-                if (regEx.IsMatch(fullName))
-                {
-                    cleanList.Add(fullName);
-                }
-            }
-
-            return cleanList.ToArray();
-        }
-
-        public string GetInitialCountOutput()
-        {
+            _initialCounter = new InitialCounter();
+            _initialCounter.ParseCandidatesList(_candidateList);
             return _initialCounter.ToString();
         }
     }

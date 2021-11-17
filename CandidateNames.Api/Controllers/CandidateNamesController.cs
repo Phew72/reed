@@ -23,7 +23,7 @@ namespace CandidateNames.Api.Controllers
         {
             var output = new StringBuilder();
 
-            var candidates = _candidates.GetAll();
+            var candidates = _candidates.GetArrayOfValidCandidates();
 
             // 24-09-2021 - Added after assessment
             IComparer<string> myFirstNameComparer = new FirstNameComparer();
@@ -38,7 +38,7 @@ namespace CandidateNames.Api.Controllers
 
             output.AppendLine();
 
-            output.Append(_candidates.GetInitialCountOutput());
+            output.Append(_candidates.GetCandidatesInitialCountOutput());
 
             // 24-09-2021 - Added after assessment
             output.AppendLine();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -7,35 +6,37 @@ namespace CandidateNames.Api.Models
 {
     public class InitialCounter
     {
-        private readonly SortedList<char, int> _intialCount;
+        private readonly SortedList<char, int> _initialCount;
 
         public int TotalInitialCount => GetTotalCount();
 
         public InitialCounter()
         {
-            _intialCount = new SortedList<char, int>();
+            _initialCount = new SortedList<char, int>();
         }
 
-        public void ParseAndIncrement(string fullName)
+        public void ParseCandidatesList(List<Candidate> candidates)
         {
-            Debug.WriteLine($"Full name: {fullName}");
+            if (candidates == null || candidates.Count == 0)
+                return;
 
-            if (string.IsNullOrWhiteSpace(fullName))
-                throw new ArgumentNullException(nameof(fullName));
+            _initialCount.Clear();
 
-            var initialChar = fullName
-                .ToUpper()
-                .Split(',')[1]
-                .Trim()
-                .ToCharArray()[0];
+            foreach (var candidate in candidates)
+            {
+                Debug.WriteLine($"Full name: {candidate.ToString()}");
 
-            Increment(initialChar);
+                if (!candidate.IsValid) continue;
+
+                var key = char.Parse(candidate.FirstInitial);
+                Increment(key);
+            }
         }
 
         public int GetTotalCount()
         {
             int count = 0;
-            foreach (var initial in _intialCount)
+            foreach (var initial in _initialCount)
             {
                 count = count + initial.Value;
             }
@@ -46,7 +47,7 @@ namespace CandidateNames.Api.Models
         {
             var output = new StringBuilder();
 
-            foreach (var (key, value) in _intialCount)
+            foreach (var (key, value) in _initialCount)
             {
                 output.AppendLine($"{key} - {value}");
             }
@@ -56,13 +57,13 @@ namespace CandidateNames.Api.Models
 
         private void Increment(char key)
         {
-            if (_intialCount.TryGetValue(key, out var currentCount))
+            if (_initialCount.TryGetValue(key, out var currentCount))
             {
-                _intialCount.Remove(key);
+                _initialCount.Remove(key);
             }
 
             var newCount = ++currentCount;
-            _intialCount.Add(key, newCount);
+            _initialCount.Add(key, newCount);
         }
     }
 }
