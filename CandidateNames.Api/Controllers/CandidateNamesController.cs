@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using CandidateNames.Api.Comparers;
 using CandidateNames.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CandidateNames.Api.Controllers
 {
@@ -23,11 +25,25 @@ namespace CandidateNames.Api.Controllers
 
             var candidates = _candidates.GetArrayOfValidCandidates();
 
+            // 24-09-2021 - Added after assessment
+            IComparer<string> myFirstNameComparer = new FirstNameComparer();
+            Array.Sort(candidates, myFirstNameComparer);
+            // Array.Sort(candidates);
+
+            output.AppendLine($"Total candidates: {candidates.Length}");
+            output.AppendLine("---------------------");
+            // ------
+
             output.AppendLine(string.Join("\n", candidates));
 
             output.AppendLine();
 
             output.Append(_candidates.GetCandidatesInitialCountOutput());
+
+            // 24-09-2021 - Added after assessment
+            output.AppendLine();
+            output.AppendLine($"Total initial count: {_candidates.TotalInitialsCounted}");
+            // ------
 
             return Ok(output.ToString());
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace CandidateNames.Api.Models
@@ -6,6 +7,8 @@ namespace CandidateNames.Api.Models
     public class InitialCounter
     {
         private readonly SortedList<char, int> _initialCount;
+
+        public int TotalInitialCount => GetTotalCount();
 
         public InitialCounter()
         {
@@ -21,11 +24,23 @@ namespace CandidateNames.Api.Models
 
             foreach (var candidate in candidates)
             {
+                Debug.WriteLine($"Full name: {candidate.ToString()}");
+
                 if (!candidate.IsValid) continue;
 
                 var key = char.Parse(candidate.FirstInitial);
                 Increment(key);
             }
+        }
+
+        public int GetTotalCount()
+        {
+            int count = 0;
+            foreach (var initial in _initialCount)
+            {
+                count = count + initial.Value;
+            }
+            return count;
         }
 
         public override string ToString()

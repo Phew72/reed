@@ -60,5 +60,26 @@ namespace CandidateNames.Tests
 
             Assert.Equal(expectedOutput, initialCounter.ToString());
         }
+
+        [Fact]
+        public void GetTotalCount_WhenMultipleInitialsCounted_ThenTotalIsCorrect()
+        {
+            var initalCounter = new InitialCounter();
+
+            var candidates = new List<Candidate>
+            {
+                new Candidate("Morgan, Arthur"),
+                new Candidate("Smith, Andy"),
+                new Candidate("Lloyd, Jonathon"),
+                new Candidate("Peters, Damian"),
+                new Candidate("Jones, David")
+            };
+
+            initalCounter.ParseCandidatesList(candidates);
+
+            var result = initalCounter.GetTotalCount();
+
+            Assert.Equal(TestData.GetCleanCandidates.Length, result);
+        }
     }
 }

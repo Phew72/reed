@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using CandidateNames.Api.Models;
 
-namespace CandidateNames.Api.Models
+namespace CandidateNames.Api.Comparers
 {
     public class CandidateNameComparer : IEqualityComparer<Candidate>
     {

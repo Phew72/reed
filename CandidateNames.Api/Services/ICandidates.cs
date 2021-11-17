@@ -4,5 +4,6 @@
     {
         string[] GetArrayOfValidCandidates();
         string GetCandidatesInitialCountOutput();
+        int TotalInitialsCounted { get; }
     }
 }
